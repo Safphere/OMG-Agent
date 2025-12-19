@@ -1,0 +1,28 @@
+# OMG-Agent Dependencies
+# Python 3.10+
+
+# ============================================
+# Core Dependencies (Required)
+# ============================================
+
+# GUI Framework
+PyQt6>=6.4.0
+
+# AI/LLM Client
+openai>=1.0.0
+
+# Image Processing
+numpy>=1.24.0
+Pillow>=9.0.0
+
+# ADB Utilities
+adbutils>=1.2.0
+
+# ============================================
+# Note
+# ============================================
+# - Requires ADB installed on system
+# - Install ADB:
+#   Windows: scoop install adb / winget install Google.PlatformTools
+#   macOS: brew install android-platform-tools
+#   Linux: apt install adb

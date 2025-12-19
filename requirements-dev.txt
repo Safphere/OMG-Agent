@@ -1,0 +1,22 @@
+# Development Dependencies
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-qt>=4.2.0
+
+# Code Formatting
+black>=23.0.0
+isort>=5.12.0
+
+# Linting
+ruff>=0.1.0
+mypy>=1.0.0
+
+# Type Stubs
+PyQt6-stubs>=6.4.0
+types-Pillow>=9.0.0
+
+# Packaging
+nuitka>=2.0.0
+ordered-set>=4.1.0

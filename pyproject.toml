@@ -1,0 +1,100 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "omg-agent"
+version = "1.0.0"
+description = "Open-sourced Mobile GUI Agent - 开源通用移动端 GUI Agent 框架"
+readme = "README.md"
+license = {text = "Apache-2.0 with Commons Clause"}
+authors = [
+    {name = "Safphere", email = "safphere@safphere.org.cn"},
+]
+keywords = ["android", "automation", "ai", "gui-agent", "phone-agent", "llm", "openai"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: X11 Applications :: Qt",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Testing",
+    "Topic :: System :: Hardware :: Hardware Drivers",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "PyQt6>=6.4.0",
+    "openai>=1.0.0",
+    "numpy>=1.24.0",
+    "Pillow>=9.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.0.0",
+    "ruff>=0.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/safphere/OMG-Agent"
+Repository = "https://github.com/safphere/OMG-Agent.git"
+Issues = "https://github.com/safphere/OMG-Agent/issues"
+
+[project.scripts]
+omg-agent = "omg_agent.__main__:main"
+
+[project.gui-scripts]
+omg-agent-gui = "omg_agent.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.package-data]
+omg_agent = ["assets/*"]
+
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+    \.git
+    | \.venv
+    | build
+    | dist
+    | libs
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+skip = [".git", ".venv", "build", "dist", "libs"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+exclude = [".git", ".venv", "build", "dist", "libs"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_ignores = true
+exclude = ["libs/", "build/", "dist/"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
