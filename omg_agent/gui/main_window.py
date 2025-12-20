@@ -1262,7 +1262,7 @@ class EnhancedMainWindow(QMainWindow):
         if self.capture_thread:
             self.capture_thread.stop()
             self.capture_thread = None
-            self._log(s.log_adb_stop)
+            self._log(s.log_stop_screen)
 
         self.btn_start_screen.setEnabled(True)
         self.btn_stop_screen.setEnabled(False)
