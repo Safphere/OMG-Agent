@@ -1,0 +1,79 @@
+name: Build and Release Executables
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: Build executables on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get version from tag
+        shell: bash
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          VERSION=${TAG#v}
+          echo "Building version: $VERSION"
+          echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Install additional tools
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxcb-cursor0
+
+      - name: Build executable with PyInstaller
+        shell: bash
+        run: |
+          BASE_NAME="omg-agent"
+          ASSETS_PATH="${{ github.workspace }}/assets"
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            OS_SUFFIX="windows"
+            EXE_NAME="$BASE_NAME-${APP_VERSION}-$OS_SUFFIX.exe"
+            pyinstaller --onefile -w -n "${BASE_NAME}-${APP_VERSION}-$OS_SUFFIX" --add-data "${ASSETS_PATH};assets" -i "${ASSETS_PATH}/logo.ico" --distpath dist --workpath build run.py
+            EXECUTABLE="dist/$EXE_NAME"
+          elif [ "$RUNNER_OS" == "Linux" ]; then
+            OS_SUFFIX="linux"
+            EXE_NAME="$BASE_NAME-${APP_VERSION}-$OS_SUFFIX"
+            pyinstaller --onefile -w -n "${BASE_NAME}-${APP_VERSION}-$OS_SUFFIX" --add-data "${ASSETS_PATH}:assets" --distpath dist --workpath build run.py
+            EXECUTABLE="dist/$EXE_NAME"
+            chmod +x "$EXECUTABLE"
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            OS_SUFFIX="macos"
+            EXE_NAME="$BASE_NAME-${APP_VERSION}-$OS_SUFFIX"
+            pyinstaller --onefile -w -n "${BASE_NAME}-${APP_VERSION}-$OS_SUFFIX" --add-data "${ASSETS_PATH}:assets" --distpath dist --workpath build run.py
+            EXECUTABLE="dist/$EXE_NAME"
+            chmod +x "$EXECUTABLE"
+          else
+            echo "Unsupported OS: $RUNNER_OS"
+            exit 1
+          fi
+
+          echo "EXECUTABLE_PATH=$EXECUTABLE" >> $GITHUB_ENV
+          echo "Built: $EXECUTABLE"
+
+      - name: Upload executables to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.EXECUTABLE_PATH }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -2414,7 +2414,7 @@ def run_app() -> None:
     app.setFont(QFont("Microsoft YaHei", 10))
 
     # 设置应用图标
-    logo_path = ASSETS_PATH / "logo.png"
+    logo_path = ASSETS_PATH / "logo.ico"
     if logo_path.exists():
         app.setWindowIcon(QIcon(str(logo_path)))
 

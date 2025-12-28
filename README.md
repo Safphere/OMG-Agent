@@ -51,6 +51,7 @@ OMG-Agent is an open-source Mobile GUI Agent desktop client that drives AI to au
 # Install ADB
 scoop install adb  # Windows
 brew install android-platform-tools  # macOS
+apt install adb  # Linux (Ubuntu)
 ```
 
 ### 2. Installation

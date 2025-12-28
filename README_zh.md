@@ -52,6 +52,7 @@ OMG-Agent 是一个开源的移动端 GUI Agent 桌面客户端，通过自然�
 # 安装 ADB
 scoop install adb  # Windows
 brew install android-platform-tools  # macOS
+apt install adb  # Linux (Ubuntu)
 ```
 
 ### 2. 安装运行
