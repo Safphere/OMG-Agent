@@ -60,7 +60,7 @@ jobs:
           elif [ "$RUNNER_OS" == "macOS" ]; then
             OS_SUFFIX="macos"
             EXE_NAME="$BASE_NAME-${APP_VERSION}-$OS_SUFFIX"
-            pyinstaller --onefile -windows -n "${BASE_NAME}-${APP_VERSION}-$OS_SUFFIX" --add-data "${ASSETS_PATH}:assets" --distpath dist --workpath build run.py
+            pyinstaller --onefile -w -n "${BASE_NAME}-${APP_VERSION}-$OS_SUFFIX" --add-data "${ASSETS_PATH}:assets" --distpath dist --workpath build run.py
             EXECUTABLE="dist/$EXE_NAME"
             chmod +x "$EXECUTABLE"
           else
