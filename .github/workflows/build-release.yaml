@@ -48,7 +48,7 @@ jobs:
           if [ "$RUNNER_OS" == "Windows" ]; then
             OS_SUFFIX="windows"
             EXE_NAME="$BASE_NAME-${APP_VERSION}-$OS_SUFFIX.exe"
-            pyinstaller --onefile -n "${BASE_NAME}-${APP_VERSION}-$OS_SUFFIX" --distpath dist --workpath build run.py
+            pyinstaller --onefile -n "${BASE_NAME}-${APP_VERSION}-$OS_SUFFIX" -i "assets/logo.ico" --distpath dist --workpath build run.py
             EXECUTABLE="dist/$EXE_NAME"
           elif [ "$RUNNER_OS" == "Linux" ]; then
             OS_SUFFIX="linux"
