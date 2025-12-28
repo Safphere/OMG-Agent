@@ -44,19 +44,24 @@ jobs:
       - name: Build executable with PyInstaller
         shell: bash
         run: |
-          APP_NAME="omg-agent"
+          BASE_NAME="omg-agent"
           if [ "$RUNNER_OS" == "Windows" ]; then
             OS_SUFFIX="windows"
             EXE_NAME="$BASE_NAME-\${APP_VERSION}-$OS_SUFFIX.exe"
             pyinstaller --onefile -n "${BASE_NAME}-${APP_VERSION}-$OS_SUFFIX" --distpath dist --workpath build run.py
+            EXECUTABLE="dist/$EXE_NAME"
           elif [ "$RUNNER_OS" == "Linux" ]; then
             OS_SUFFIX="linux"
             EXE_NAME="$BASE_NAME-\${APP_VERSION}-$OS_SUFFIX"
             pyinstaller --onefile -n "${BASE_NAME}-${APP_VERSION}-$OS_SUFFIX" --distpath dist --workpath build run.py
+            EXECUTABLE="dist/$EXE_NAME"
+            chmod +x "$EXECUTABLE"
           elif [ "$RUNNER_OS" == "macOS" ]; then
             OS_SUFFIX="macos"
             EXE_NAME="$BASE_NAME-\${APP_VERSION}-$OS_SUFFIX"
             pyinstaller --onefile -n "${BASE_NAME}-${APP_VERSION}-$OS_SUFFIX" --distpath dist --workpath build run.py
+            EXECUTABLE="dist/$EXE_NAME"
+            chmod +x "$EXECUTABLE"
           else
             echo "Unsupported OS: $RUNNER_OS"
             exit 1
